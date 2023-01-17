@@ -23,12 +23,14 @@ var example = (function () {
     );
 
     camera.position.z = 500;
-    scene.add(camera);
+
+    var marker = new THREE.Object3D();
+    scene.add(marker);
 
     var cover = new THREE.MeshNormalMaterial();
     var body = new THREE.SphereGeometry(100);
     var avatar = new THREE.Mesh(body, cover);
-    scene.add(avatar);
+    marker.add(avatar);
 
     var hand = new THREE.SphereGeometry(50);
 
@@ -50,6 +52,8 @@ var example = (function () {
     left_foot.position.set(75, -120, 0);
     avatar.add(left_foot);
 
+    marker.add(camera);
+
     makeTreeAt(500, 0);
     makeTreeAt(-500, 0);
     makeTreeAt(750, -1000);
@@ -58,12 +62,12 @@ var example = (function () {
     function makeTreeAt(x, z) {
       var trunk = new THREE.Mesh(
         new THREE.CylinderGeometry(50, 50, 200),
-        new THREE.MeshBasicMaterial({color: 0xA0522D})
+        new THREE.MeshBasicMaterial({ color: 0xa0522d })
       );
 
       var top = new THREE.Mesh(
         new THREE.SphereGeometry(150),
-        new THREE.MeshBasicMaterial({color: 0x228B22})
+        new THREE.MeshBasicMaterial({ color: 0x228b22 })
       );
       top.position.y = 175;
       trunk.add(top);
@@ -72,32 +76,32 @@ var example = (function () {
       scene.add(trunk);
     }
 
-     //render();
-     var is_cartwheeling = false;
-     var is_flipping = false;
-     function animate() {
+    //render();
+    var is_cartwheeling = false;
+    var is_flipping = false;
+    function animate() {
       requestAnimationFrame(animate);
-      if(is_cartwheeling) {
+      if (is_cartwheeling) {
         avatar.rotation.z = avatar.rotation.z + 0.05;
       }
-      if(is_flipping) {
+      if (is_flipping) {
         avatar.rotation.x = avatar.rotation.x + 0.05;
       }
       render();
-     }
+    }
 
-     animate();
+    animate();
 
-     document.addEventListener('keydown', function(event) {
+    document.addEventListener("keydown", function (event) {
       var code = event.keyCode;
-      if(code == 37) avatar.position.x = avatar.position.x-5 //left
-      if(code == 38) avatar.position.x = avatar.position.z-5; //up
-      if(code == 39) avatar.position.x = avatar.position.x+5; //right
-      if(code == 40) avatar.position.z = avatar.position.z+5; // down
+      if (code == 37) marker.position.x = marker.position.x - 5; //left
+      if (code == 38) marker.position.x = marker.position.z - 5; //up
+      if (code == 39) marker.position.x = marker.position.x + 5; //right
+      if (code == 40) marker.position.z = marker.position.z + 5; // down
 
-      if(code == 67) is_cartwheeling = !is_cartwheeling; // C
-      if(code == 70) is_flipping = !is_flipping; // F
-     });
+      if (code == 67) is_cartwheeling = !is_cartwheeling; // C
+      if (code == 70) is_flipping = !is_flipping; // F
+    });
   }
 
   function render() {

@@ -50,6 +50,28 @@ var example = (function () {
     left_foot.position.set(75, -120, 0);
     avatar.add(left_foot);
 
+    makeTreeAt(500, 0);
+    makeTreeAt(-500, 0);
+    makeTreeAt(750, -1000);
+    makeTreeAt(-750, -1000);
+
+    function makeTreeAt(x, z) {
+      var trunk = new THREE.Mesh(
+        new THREE.CylinderGeometry(50, 50, 200),
+        new THREE.MeshBasicMaterial({color: 0xA0522D})
+      );
+
+      var top = new THREE.Mesh(
+        new THREE.SphereGeometry(150),
+        new THREE.MeshBasicMaterial({color: 0x228B22})
+      );
+      top.position.y = 175;
+      trunk.add(top);
+
+      trunk.position.set(x, -75, z);
+      scene.add(trunk);
+    }
+
      //render();
      var is_cartwheeling = false;
      var is_flipping = false;

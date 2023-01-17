@@ -25,61 +25,47 @@ var example = (function () {
     camera.position.z = 500;
     scene.add(camera);
 
-    var shape = new THREE.SphereGeometry(100, 20, 15);
     var cover = new THREE.MeshNormalMaterial();
-    var ball = new THREE.Mesh(shape, cover);
+    var body = new THREE.SphereGeometry(100);
+    var avatar = new THREE.Mesh(body, cover);
+    scene.add(avatar);
 
-    scene.add(ball);
-    ball.position.set(-250, -250, -250);
+    var hand = new THREE.SphereGeometry(50);
 
-    var shape = new THREE.CubeGeometry(300, 100, 20);
-    var cover = new THREE.MeshNormalMaterial();
-    var box = new THREE.Mesh(shape, cover);
-    scene.add(box);
-    box.rotation.set(0.5, 0.5, 0);
-    box.position.set(250, 250, -250);
+    var right_hand = new THREE.Mesh(hand, cover);
+    right_hand.position.set(-150, 0, 0);
+    avatar.add(right_hand);
 
-    var shape = new THREE.CylinderGeometry(1, 100, 100, 4);
-    var cover = new THREE.MeshNormalMaterial();
-    var tube = new THREE.Mesh(shape, cover);
-    scene.add(tube);
-    tube.rotation.set(0.5, 0, 0);
-    tube.position.set(250, -250, -250);
+    var left_hand = new THREE.Mesh(hand, cover);
+    left_hand.position.set(150, 0, 0);
+    avatar.add(left_hand);
 
-    var shape = new THREE.PlaneGeometry(300, 100);
-    var cover = new THREE.MeshNormalMaterial();
-    var ground = new THREE.Mesh(shape, cover);
-    scene.add(ground);
-    ground.rotation.set(0.5, 0, 0);
-    ground.position.set(-250, -250, -250);
+    var foot = new THREE.SphereGeometry(50);
 
-    var shape = new THREE.TorusGeometry(100, 25, 8, 25, 3.14);
-    var cover = new THREE.MeshNormalMaterial();
-    var donut = new THREE.Mesh(shape, cover);
-    scene.add(donut);
+    var right_foot = new THREE.Mesh(foot, cover);
+    right_foot.position.set(-75, -125, 0);
+    avatar.add(right_foot);
 
-    var clock = new THREE.Clock();
+    var left_foot = new THREE.Mesh(foot, cover);
+    left_foot.position.set(75, -120, 0);
+    avatar.add(left_foot);
 
-    function animate() {
+     //render();
+     var is_cartwheeling = false;
+     function animate() {
       requestAnimationFrame(animate);
-      var t = clock.getElapsedTime();
-
-      ball.rotation.set(t, 2*t, 0);
-      box.rotation.set(t, 2 * t, 0);
-      tube.rotation.set(t, 2 * t, 0);
-      ground.rotation.set(t, 2 * t, 0);
-      donut.rotation.set(t, 2 * t, 0);
-
-
+      if(is_cartwheeling) {
+        avatar.rotation.z = avatar.rotation.z + 0.05;
+      }
       render();
-    }
+     }
 
-    animate();
+     animate();
   }
 
   function render() {
     renderer.render(scene, camera);
-    requestAnimationFrame(render);
+    //requestAnimationFrame(render);
   }
 
   window.onload = initScene;

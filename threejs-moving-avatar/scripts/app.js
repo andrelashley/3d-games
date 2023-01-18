@@ -85,6 +85,7 @@ var example = (function () {
     }
     animate();
     function walk() {
+      if (!isWalking()) return;
       var position = Math.sin(clock.getElapsedTime() * 5) * 50;
       right_hand.position.z = position;
       left_hand.position.z = -position;
@@ -102,15 +103,43 @@ var example = (function () {
       }
     }
 
+    var is_moving_right, is_moving_left, is_moving_forward, is_moving_back;
+    function isWalking() {
+      if (is_moving_right) return true;
+      if (is_moving_left) return true;
+      if (is_moving_forward) return true;
+      if (is_moving_back) return true;
+      return false;
+    }
     document.addEventListener("keydown", function (event) {
       var code = event.keyCode;
-      if (code == 37) marker.position.x = marker.position.x - 5; //left
-      if (code == 38) marker.position.x = marker.position.z - 5; //up
-      if (code == 39) marker.position.x = marker.position.x + 5; //right
-      if (code == 40) marker.position.z = marker.position.z + 5; // down
+      if (code == 37) {
+        marker.position.x = marker.position.x - 5; //left
+        is_moving_left = true;
+      }
+      if (code == 38) {
+        marker.position.z = marker.position.z - 5; //up
+        is_moving_forward = true;
+      }
+      if (code == 39) {
+        marker.position.x = marker.position.x + 5; //right
+        is_moving_right = true;
+      }
+      if (code == 40) {
+        marker.position.z = marker.position.z + 5; // down
+        is_moving_back = true;
+      }
 
       if (code == 67) is_cartwheeling = !is_cartwheeling; // C
       if (code == 70) is_flipping = !is_flipping; // F
+    });
+
+    document.addEventListener("keyup", function (event) {
+      var code = event.keyCode;
+      if (code == 37) is_moving_left = false;
+      if (code == 38) is_moving_forward = false;
+      if (code == 39) is_moving_right = false;
+      if (code == 40) is_moving_back = false;
     });
   }
 

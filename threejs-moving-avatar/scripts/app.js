@@ -76,21 +76,31 @@ var example = (function () {
       scene.add(trunk);
     }
 
-    //render();
-    var is_cartwheeling = false;
-    var is_flipping = false;
+    var clock = new THREE.Clock(true);
     function animate() {
       requestAnimationFrame(animate);
+      walk();
+      acrobatics();
+      renderer.render(scene, camera);
+    }
+    animate();
+    function walk() {
+      var position = Math.sin(clock.getElapsedTime() * 5) * 50;
+      right_hand.position.z = position;
+      left_hand.position.z = -position;
+      right_foot.position.z = position;
+      left_foot.position.z = -position;
+    }
+    var is_cartwheeling = false;
+    var is_flipping = false;
+    function acrobatics() {
       if (is_cartwheeling) {
         avatar.rotation.z = avatar.rotation.z + 0.05;
       }
       if (is_flipping) {
         avatar.rotation.x = avatar.rotation.x + 0.05;
       }
-      render();
     }
-
-    animate();
 
     document.addEventListener("keydown", function (event) {
       var code = event.keyCode;
@@ -102,11 +112,6 @@ var example = (function () {
       if (code == 67) is_cartwheeling = !is_cartwheeling; // C
       if (code == 70) is_flipping = !is_flipping; // F
     });
-  }
-
-  function render() {
-    renderer.render(scene, camera);
-    //requestAnimationFrame(render);
   }
 
   window.onload = initScene;
